@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:kiu_todo_firebase/screens/dashboard_screen.dart';
 import 'package:kiu_todo_firebase/screens/forgot_password_screen.dart';
 import 'package:kiu_todo_firebase/screens/sign_up_screen.dart';
 
@@ -11,6 +12,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+  var emailC = TextEditingController();
+  var passC = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,6 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
 
             TextField(
+              controller: emailC,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: 'Email',
@@ -31,6 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             const Gap(16),
             TextField(
+              controller: passC,
               obscureText: true,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
@@ -50,7 +57,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   backgroundColor: Colors.green,
                   foregroundColor: Colors.white,
                 ),
-                onPressed: (){}, child: const Text('LOGIN')),
+                onPressed: (){
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                    return const DashboardScreen();
+                  }));
+
+                }, child: const Text('LOGIN')),
 
             const Gap(16),
 
