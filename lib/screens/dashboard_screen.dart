@@ -21,7 +21,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         actions: [
           
           IconButton(onPressed: (){}, icon: Icon(Icons.person)),
-          IconButton(onPressed: (){}, icon: Icon(Icons.logout)),
+          IconButton(onPressed: (){}, icon: Icon(Icons.logout )),
 
         ],
       
