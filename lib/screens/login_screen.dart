@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gap/gap.dart';
 import 'package:kiu_todo_firebase/screens/dashboard_screen.dart';
+import 'package:kiu_todo_firebase/screens/email_verification_screen.dart';
 import 'package:kiu_todo_firebase/screens/forgot_password_screen.dart';
 import 'package:kiu_todo_firebase/screens/sign_up_screen.dart';
 
@@ -16,6 +18,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   var emailC = TextEditingController();
   var passC = TextEditingController();
+
+  bool loggingIn = false;
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +68,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   String email = emailC.text.trim();
                   String pass = passC.text.trim();
 
+                  loggingIn = true;
+                  setState(() {
+
+                  });
                 try{
 
 
@@ -71,9 +79,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   UserCredential userC = await fbAuth.signInWithEmailAndPassword(email: email, password: pass);
 
                   if( userC.user != null ){
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){
-                      return const DashboardScreen();
-                    }));
+
+                    if( userC.user!.emailVerified){
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){
+                        return const DashboardScreen();
+                      }));
+                    }else {
+
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){
+                        return const EmailVerificationScreen();
+                      }));
+                    }
+
+
                   }
                 }
                 on FirebaseAuthException catch ( e){
@@ -81,10 +99,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text(e.toString()))
                   );
+                }finally {
+                  loggingIn = false;
+                  setState(() {
+
+                  });
                 }
 
 
-                }, child: const Text('LOGIN')),
+                }, child: loggingIn ?
+                SpinKitCircle(color: Colors.white,)
+                : const Text('LOGIN')),
 
             const Gap(16),
 
