@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -78,7 +79,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   backgroundColor: Colors.green,
                   foregroundColor: Colors.white,
                 ),
-                onPressed: (){
+                onPressed: () async {
 
                   String name = nameC.text.trim();
                   String mobile = mobileC.text.trim();
@@ -86,6 +87,42 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   String pass = passC.text.trim();
                   String confirmPass = confirmPassC.text.trim();
 
+                  // Todo: check for empty fields validation
+
+                  if( pass.length < 6) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Weak Password. At least 6 characters are required'))
+                    );
+                    return;
+                  }
+
+                  if( pass != confirmPass){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Passwords do not match'))
+                    );
+                    return;
+                  }
+
+
+                  try {
+                    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+                    UserCredential userCredential = await firebaseAuth.createUserWithEmailAndPassword(email: email, password: pass);
+
+                    if( userCredential.user != null ){
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Success'))
+                      );
+                    }else{
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Failed'))
+                      );
+                    }
+                  }
+                  on FirebaseAuthException catch (e ){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                         SnackBar(content: Text(e.toString()))
+                    );
+                  }
 
 
                 }, child: const Text('SIGN UP')),

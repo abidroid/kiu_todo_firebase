@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:kiu_todo_firebase/screens/dashboard_screen.dart';
@@ -57,10 +58,31 @@ class _LoginScreenState extends State<LoginScreen> {
                   backgroundColor: Colors.green,
                   foregroundColor: Colors.white,
                 ),
-                onPressed: (){
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context){
-                    return const DashboardScreen();
-                  }));
+                onPressed: () async {
+
+
+                  String email = emailC.text.trim();
+                  String pass = passC.text.trim();
+
+                try{
+
+
+                  FirebaseAuth fbAuth = FirebaseAuth.instance;
+                  UserCredential userC = await fbAuth.signInWithEmailAndPassword(email: email, password: pass);
+
+                  if( userC.user != null ){
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){
+                      return const DashboardScreen();
+                    }));
+                  }
+                }
+                on FirebaseAuthException catch ( e){
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(e.toString()))
+                  );
+                }
+
 
                 }, child: const Text('LOGIN')),
 
