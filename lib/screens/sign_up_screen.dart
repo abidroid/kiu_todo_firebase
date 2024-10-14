@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -109,9 +110,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     UserCredential userCredential = await firebaseAuth.createUserWithEmailAndPassword(email: email, password: pass);
 
                     if( userCredential.user != null ){
+
+                      // store other info in cloud firestore
+
+                      FirebaseFirestore ff = FirebaseFirestore.instance;
+
+                      String uid = userCredential.user!.uid;
+                      int createdOn = DateTime.now().millisecondsSinceEpoch;
+
+                      await ff.collection('users').doc(uid)
+                      .set({
+                        'name': name,
+                        'mobile': mobile,
+                        'uid': uid,
+                        'createdOn': createdOn,
+                        'email': email,
+                        'photo': null,
+                      });
+
+
                       ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Success'))
                       );
+
+
+
                     }else{
                       ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Failed'))
