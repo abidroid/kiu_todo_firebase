@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:kiu_todo_firebase/screens/add_task_screen.dart';
 import 'package:kiu_todo_firebase/screens/login_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -14,7 +15,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(onPressed: (){
-        
+
+        Navigator.of(context).push(MaterialPageRoute(builder: (cntext){
+          return const AddTaskScreen();
+        }));
       }, child: Icon(Icons.add,),),
       appBar: AppBar(
         backgroundColor: Colors.green,
