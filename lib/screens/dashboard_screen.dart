@@ -5,6 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 import 'package:kiu_todo_firebase/screens/add_task_screen.dart';
 import 'package:kiu_todo_firebase/screens/login_screen.dart';
+import 'package:kiu_todo_firebase/screens/update_task_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -101,7 +102,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
 
                         }, icon: Icon(Icons.delete)),
-                        IconButton(onPressed: (){}, icon: Icon(Icons.edit)),
+                        IconButton(onPressed: (){
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                            return UpdateTaskScreen(documentSnapshot: list[index]);
+                          }));
+
+                        }, icon: Icon(Icons.edit)),
 
                       ],
                     ),
