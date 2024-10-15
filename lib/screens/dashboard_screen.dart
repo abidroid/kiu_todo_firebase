@@ -5,6 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 import 'package:kiu_todo_firebase/screens/add_task_screen.dart';
 import 'package:kiu_todo_firebase/screens/login_screen.dart';
+import 'package:kiu_todo_firebase/screens/profile_screen.dart';
 import 'package:kiu_todo_firebase/screens/update_task_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -45,7 +46,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
         title: const Text('Dashboard'),
         actions: [
           
-          IconButton(onPressed: (){}, icon: Icon(Icons.person)),
+          IconButton(onPressed: (){
+
+            Navigator.of(context).push(MaterialPageRoute(builder: (context){
+              return ProfileScreen();
+            }));
+
+          }, icon: Icon(Icons.person)),
           IconButton(onPressed: (){
 
             showDialog(context: context, builder: (context){
